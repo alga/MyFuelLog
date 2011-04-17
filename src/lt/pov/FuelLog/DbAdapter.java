@@ -16,6 +16,7 @@ public class DbAdapter {
 	private DatabaseHelper helper;
 	private SQLiteDatabase db;
 	
+	
 	private static class DatabaseHelper extends SQLiteOpenHelper {
 		private static final String CREATE_TABLE = 
 			"CREATE TABLE Fills" +
