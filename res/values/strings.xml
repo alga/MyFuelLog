@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">My Fuel Log</string>
+    <string name="add_text">Add</string>
+    <string name="odometer_text">Odometer</string>
+    <string name="volume">Volume (l)</string>
+    <string name="sum">Sum</string>
+    <string name="full">Full</string>
+    <string name="done">Done</string>
+    <string name="cancel">Cancel</string>
+</resources>

@@ -1,0 +1,52 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="fill_parent" android:id="@+id/linearLayout1"
+	android:layout_width="fill_parent" android:orientation="vertical">
+	<LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent"
+		android:orientation="vertical" android:id="@+id/dateRow">
+		<TextView android:id="@+id/textView1" android:text="Date"
+			android:layout_height="wrap_content" android:layout_width="wrap_content"
+			android:layout_weight="1"></TextView>
+		<DatePicker android:layout_height="wrap_content"
+			android:id="@+id/date_widget" android:layout_width="match_parent"></DatePicker>
+	</LinearLayout>
+	<LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent"
+		android:orientation="vertical" android:id="@+id/odometerRow">
+		<TextView android:id="@+id/textView2" android:text="@string/odometer_text"
+			android:layout_height="wrap_content" android:layout_width="wrap_content"
+			android:layout_weight="1"></TextView>
+		<EditText android:layout_weight="1"
+			android:layout_height="wrap_content" android:inputType="number"
+			android:id="@+id/odometer_widget" android:layout_width="match_parent"></EditText>
+	</LinearLayout>
+	<LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent"
+		android:orientation="vertical" android:id="@+id/volumeRow">
+		<TextView android:id="@+id/textView3" android:text="@string/volume"
+			android:layout_height="wrap_content" android:layout_width="wrap_content"
+			android:layout_weight="1"></TextView>
+		<EditText android:layout_height="wrap_content"
+			android:id="@+id/volume_widget" android:layout_weight="2" android:inputType="numberDecimal"
+			android:layout_width="match_parent"></EditText>
+	</LinearLayout>
+	<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+		android:orientation="vertical" android:id="@+id/sumRow">
+		<TextView android:id="@+id/textView4" android:text="@string/sum"
+			android:layout_height="wrap_content" android:layout_width="wrap_content"
+			android:layout_weight="1"></TextView>
+		<EditText android:layout_height="wrap_content"
+			android:id="@+id/sum_widget" android:layout_weight="2" android:inputType="numberDecimal"
+			android:layout_width="match_parent"></EditText>
+	</LinearLayout>
+	<LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/fullRow">
+		<CheckBox android:layout_weight="1" android:layout_height="wrap_content"
+			android:layout_width="wrap_content" android:text="@string/full"
+			android:id="@+id/full_widget"></CheckBox>
+	</LinearLayout>
+	<LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/buttons">
+		<Button android:layout_weight="1" android:layout_height="wrap_content"
+			android:layout_width="wrap_content" android:text="@string/done"
+			android:id="@+id/save_button"></Button>
+		<Button android:layout_weight="1" android:layout_height="wrap_content"
+			android:layout_width="wrap_content" android:text="@string/cancel"
+			android:id="@+id/cancel_button"></Button>
+	</LinearLayout>
+</LinearLayout>
