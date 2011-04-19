@@ -10,4 +10,6 @@
     <string name="full">Full</string>
     <string name="done">Done</string>
     <string name="cancel">Cancel</string>
+    <string name="lt">Lt</string>
+    <string name="litres">l</string>
 </resources>

@@ -49,6 +49,8 @@ public final class R {
         public static final int done=0x7f040008;
         public static final int full=0x7f040007;
         public static final int import_text=0x7f040002;
+        public static final int litres=0x7f04000b;
+        public static final int lt=0x7f04000a;
         public static final int odometer_text=0x7f040004;
         public static final int sum=0x7f040006;
         public static final int volume=0x7f040005;

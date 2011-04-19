@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
@@ -48,6 +49,25 @@ public class MyFuelLog extends ListActivity {
         int[] to = new int[]{R.id.item_date, R.id.item_sum, R.id.item_volume};
         SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(
         		this, R.layout.list_item, cursor, from, to);
+        
+        cursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+        	public boolean setViewValue(View v, Cursor c, int column) {
+        		String suffix = null;
+        		if (column == c.getColumnIndex("sum")) {
+        			suffix = getString(R.string.lt);
+        		} else if (column == c.getColumnIndex("volume")) {
+        			suffix = getString(R.string.litres);
+        		}
+        		if (suffix != null) {
+        			TextView t = (TextView) v;
+        			double value = c.getDouble(column);
+        			t.setText(String.format("%.02f %s", value, suffix));
+        			return true;
+        		}
+    			return false;
+        	}
+        });
+
         setListAdapter(cursorAdapter);
     }
     
