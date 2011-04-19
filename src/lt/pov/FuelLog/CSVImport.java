@@ -35,7 +35,7 @@ public class CSVImport {
 					              Integer.valueOf(segments[1]).intValue(),
 					              Double.valueOf(segments[2]).doubleValue(),
 					              Double.valueOf(segments[3]).doubleValue(),
-					              segments[4] == "1"));
+					              segments[4].equals("1")));
 		}
 		return result;
 	}
