@@ -3,7 +3,7 @@
     <string name="app_name">My Fuel Log</string>
     <string name="add_text">Add</string>
     <string name="import_text">Import</string>
-    
+    <string name="delete_text">Delete</string>
     <string name="odometer_text">Odometer</string>
     <string name="volume">Volume (l)</string>
     <string name="sum">Sum</string>

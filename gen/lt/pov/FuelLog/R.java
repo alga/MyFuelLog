@@ -44,12 +44,13 @@ public final class R {
     public static final class string {
         public static final int add_text=0x7f040001;
         public static final int app_name=0x7f040000;
-        public static final int cancel=0x7f040008;
-        public static final int done=0x7f040007;
-        public static final int full=0x7f040006;
+        public static final int cancel=0x7f040009;
+        public static final int delete_text=0x7f040003;
+        public static final int done=0x7f040008;
+        public static final int full=0x7f040007;
         public static final int import_text=0x7f040002;
-        public static final int odometer_text=0x7f040003;
-        public static final int sum=0x7f040005;
-        public static final int volume=0x7f040004;
+        public static final int odometer_text=0x7f040004;
+        public static final int sum=0x7f040006;
+        public static final int volume=0x7f040005;
     }
 }

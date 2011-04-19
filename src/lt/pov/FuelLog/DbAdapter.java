@@ -82,7 +82,7 @@ public class DbAdapter {
 	}
 	
 	public Cursor fetch(long id) throws SQLException {
-		Cursor result = db.query(TABLE_NAME, null, null, null, "_id=" + id, null, null);
+		Cursor result = db.query(TABLE_NAME, null, "_id=" + id, null, null, null, null);
 		if (result != null)
 			result.moveToFirst();
 		return result;

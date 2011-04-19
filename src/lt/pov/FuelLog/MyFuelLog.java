@@ -6,16 +6,25 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 
 public class MyFuelLog extends ListActivity {
 
+	// Menu item ids
 	public static final int ADD_ID = 1;
 	public static final int IMPORT_ID = 2;
+	public static final int DELETE_ID = 3;
+	
+	// Activity request codes
 	public static final int ACTIVITY_CREATE = 1;
 	public static final int ACTIVITY_PICK = 2;
 	
@@ -23,12 +32,13 @@ public class MyFuelLog extends ListActivity {
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
-		  super.onCreate(savedInstanceState);
-		  setContentView(R.layout.main);
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+		registerForContextMenu(getListView());
 		  
-		  db = new DbAdapter(this);
-		  db.open();
-		  fillData();
+		db = new DbAdapter(this);
+		db.open();
+		fillData();
 	}
 	
     private void fillData() {
@@ -49,6 +59,13 @@ public class MyFuelLog extends ListActivity {
 	}
 
 	@Override
+	protected void onListItemClick(ListView l, View v, int pos, long id) {
+        Intent i = new Intent(this, AddFillActivity.class);
+        i.putExtra("_id", id);
+        startActivityForResult(i, ACTIVITY_CREATE);        
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case ADD_ID: 
@@ -62,20 +79,43 @@ public class MyFuelLog extends ListActivity {
 		return super.onOptionsItemSelected(item);
 	}
   
-    public void addFill() {
+    @Override
+	public boolean onContextItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case DELETE_ID:
+            AdapterContextMenuInfo info = 
+            	(AdapterContextMenuInfo) item.getMenuInfo();
+            db.delete(info.id);
+            fillData();
+            return true;
+		}
+		return super.onContextItemSelected(item);
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		menu.add(Menu.NONE, DELETE_ID, Menu.NONE, R.string.delete_text);
+		super.onCreateContextMenu(menu, v, menuInfo);
+	}
+
+	public void addFill() {
         Intent i = new Intent(this, AddFillActivity.class);
         startActivityForResult(i, ACTIVITY_CREATE);
     }
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {	
+	protected void onActivityResult(int requestCode, int resultCode,
+			                          Intent data) {	
 		switch(requestCode) {
 		case ACTIVITY_CREATE:
 			fillData();
 			break;
 		case ACTIVITY_PICK:
-			importCSV(data.getData().getPath());
-			fillData();
+			if (data != null) {
+				importCSV(data.getData().getPath());
+				fillData();
+			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
