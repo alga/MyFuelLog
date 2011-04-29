@@ -1,3 +1,5 @@
+// -*- c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil -*-
+
 package lt.pov.FuelLog;
 
 import android.content.ContentValues;
@@ -15,10 +17,10 @@ public class DbAdapter {
 	private final Context context;
 	private DatabaseHelper helper;
 	private SQLiteDatabase db;
-	
-	
+
+
 	private static class DatabaseHelper extends SQLiteOpenHelper {
-		private static final String CREATE_TABLE = 
+		private static final String CREATE_TABLE =
 			"CREATE TABLE Fills" +
 			"(_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 			" date DATE NOT NULL," +
@@ -26,33 +28,33 @@ public class DbAdapter {
 			" volume DECIMAL(10,1) NOT NULL," +
 			" sum DECIMAL(10,2) NOT NULL," +
 			" full BOOLEAN NOT NULL);";
-			
+
 		DatabaseHelper(Context context) {
 			super(context, DB_NAME, null, DB_VERSION);
 		}
-		
+
 		public void onCreate(SQLiteDatabase db) {
 			db.execSQL(CREATE_TABLE);
 		}
-		
+
 		public void onUpgrade(SQLiteDatabase db, int oldV, int newV) {
 			assert false;  // upgrade not supported yet
 		}
 	}
-	
+
 	DbAdapter(Context context) {
 		this.context = context;
 	}
-	
+
 	public void open() throws SQLException {
 		helper = new DatabaseHelper(context);
 		db = helper.getWritableDatabase();
 	}
-	
+
 	public void close() {
 		helper.close();
 	}
-	
+
 	public long insert(String date, int odometer, double volume, double sum, boolean full) {
 		ContentValues values = new ContentValues();
 		values.put("date", date);
@@ -76,11 +78,11 @@ public class DbAdapter {
 	public void delete(long id){
 		db.delete(TABLE_NAME, "_id = " + id, null);
 	}
-	
+
 	public Cursor fetchAll() {
 		return db.query(TABLE_NAME, null, null, null, null, null, null);
 	}
-	
+
 	public Cursor fetch(long id) throws SQLException {
 		Cursor result = db.query(TABLE_NAME, null, "_id=" + id, null, null, null, null);
 		if (result != null)

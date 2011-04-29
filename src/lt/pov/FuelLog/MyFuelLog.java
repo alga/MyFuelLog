@@ -1,3 +1,5 @@
+// -*- c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil -*-
+
 package lt.pov.FuelLog;
 
 import java.io.IOException;
@@ -36,7 +38,7 @@ public class MyFuelLog extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		registerForContextMenu(getListView());
-		  
+		
 		db = new DbAdapter(this);
 		db.open();
 		fillData();
@@ -49,7 +51,7 @@ public class MyFuelLog extends ListActivity {
         int[] to = new int[]{R.id.item_date, R.id.item_sum, R.id.item_volume};
         SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(
         		this, R.layout.list_item, cursor, from, to);
-        
+
         cursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
         	public boolean setViewValue(View v, Cursor c, int column) {
         		String suffix = null;
@@ -70,7 +72,7 @@ public class MyFuelLog extends ListActivity {
 
         setListAdapter(cursorAdapter);
     }
-    
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(Menu.NONE, ADD_ID, Menu.NONE, R.string.add_text);
@@ -82,13 +84,13 @@ public class MyFuelLog extends ListActivity {
 	protected void onListItemClick(ListView l, View v, int pos, long id) {
         Intent i = new Intent(this, AddFillActivity.class);
         i.putExtra("_id", id);
-        startActivityForResult(i, ACTIVITY_CREATE);        
+        startActivityForResult(i, ACTIVITY_CREATE);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case ADD_ID: 
+		case ADD_ID:
 			addFill();
 			return true;
 		case IMPORT_ID:
@@ -98,12 +100,12 @@ public class MyFuelLog extends ListActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-  
+
     @Override
 	public boolean onContextItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case DELETE_ID:
-            AdapterContextMenuInfo info = 
+            AdapterContextMenuInfo info =
             	(AdapterContextMenuInfo) item.getMenuInfo();
             db.delete(info.id);
             fillData();
@@ -126,7 +128,7 @@ public class MyFuelLog extends ListActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode,
-			                          Intent data) {	
+			                          Intent data) {
 		switch(requestCode) {
 		case ACTIVITY_CREATE:
 			fillData();
@@ -151,7 +153,6 @@ public class MyFuelLog extends ListActivity {
 					       Toast.LENGTH_SHORT);
 		}
 	}
-    
-    
+
+
 }
-	
