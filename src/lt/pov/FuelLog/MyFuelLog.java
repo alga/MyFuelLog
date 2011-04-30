@@ -26,24 +26,24 @@ public class MyFuelLog extends ListActivity {
 	public static final int ADD_ID = 1;
 	public static final int IMPORT_ID = 2;
 	public static final int DELETE_ID = 3;
-	
+
 	// Activity request codes
 	public static final int ACTIVITY_CREATE = 1;
 	public static final int ACTIVITY_PICK = 2;
-	
+
 	private DbAdapter db;
-	
+
 	@Override
     public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		registerForContextMenu(getListView());
-		
+
 		db = new DbAdapter(this);
 		db.open();
 		fillData();
 	}
-	
+
     private void fillData() {
         Cursor cursor = db.fetchAll();
         startManagingCursor(cursor);
