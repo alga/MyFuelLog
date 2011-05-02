@@ -18,6 +18,13 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import java.util.HashMap;
+import android.widget.AdapterView;
+import lt.pov.FuelLog.CSVImport.Record;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import android.util.Log;
 
 
 public class MyFuelLog extends ListActivity {
@@ -44,11 +51,17 @@ public class MyFuelLog extends ListActivity {
 		fillData();
 	}
 
+    /** Populate the list with items */
     private void fillData() {
+        final FillStats stats = new FillStats(db);
+        stats.calculate();
+
         Cursor cursor = db.fetchAll();
         startManagingCursor(cursor);
-        String[] from = {"date", "sum", "volume"};
-        int[] to = new int[]{R.id.item_date, R.id.item_sum, R.id.item_volume};
+        // I'm an evil person, I'll bind the economy value on setViewValue for "full".
+        String[] from = {"date", "sum", "volume", "full"};
+        int[] to = new int[]{R.id.item_date, R.id.item_sum, R.id.item_volume,
+                             R.id.item_economy};
         SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(
         		this, R.layout.list_item, cursor, from, to);
 
@@ -66,6 +79,18 @@ public class MyFuelLog extends ListActivity {
         			t.setText(String.format("%.02f %s", value, suffix));
         			return true;
         		}
+                if (column == c.getColumnIndex("full")) {
+        			TextView t = (TextView) v;
+        			suffix = getString(R.string.lper100km);
+                    long id = c.getLong(c.getColumnIndex("_id"));
+        			Double value = stats.getEconomy(id);
+                    if (value != null) {
+                        t.setText(String.format("%.02f %s", value, suffix));
+                    } else { 
+                        t.setText("");
+                    }
+        			return true;
+                }
     			return false;
         	}
         });
@@ -154,5 +179,65 @@ public class MyFuelLog extends ListActivity {
 		}
 	}
 
+}
 
+/**
+ * Calculate and query mileage figures for fills.
+ */
+class FillStats {
+
+    /** Fuel economy for each fill, in l/100km */
+    private Map<Long, Double> economy = new HashMap<Long, Double>();
+    private final DbAdapter db;
+
+    FillStats(DbAdapter db) {
+        this.db = db;
+    }
+
+    /** Calculates the economy values for each fill. */
+    void calculate() {
+        Cursor c = db.fetchAll();
+        int lastOdometer = 0;
+        double totalVolume = 0;
+        List<Long> fillIds = new ArrayList<Long>(10);
+
+        for(; c.moveToNext(); ) {
+            long id = c.getLong(c.getColumnIndex("_id"));
+            Log.d("MyFuelLog", "looking at " + id);
+            boolean full = c.getInt(c.getColumnIndex("full")) != 0;
+            int odometer = c.getInt(c.getColumnIndex("odometer"));
+            double volume = c.getDouble(c.getColumnIndex("volume"));
+
+            if (full && lastOdometer == 0) {
+                // Initialise on the first complete fill
+                lastOdometer = odometer;
+                continue;
+            }
+
+            totalVolume += volume;
+            fillIds.add(id);
+
+            if (full) {
+                double result = 100.0 * totalVolume / (odometer - lastOdometer);
+                for(Long i : fillIds) {
+                    economy.put(i, result);
+                    Log.d("MyFuelLog", "economy for " + i + " = " + result);
+                }
+
+                // Clean up for the next iteration
+                fillIds.clear();
+                totalVolume = 0;
+                lastOdometer = odometer;
+            }
+        }
+        c.close();
+    }
+
+    Double getEconomy(long id) {
+        return economy.get(id);
+    }
+
+    boolean haveEconomy(long id) {
+        return economy.containsKey(id);
+    }
 }

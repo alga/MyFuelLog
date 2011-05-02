@@ -21,8 +21,9 @@ public final class R {
         public static final int fullRow=0x7f05000d;
         public static final int full_widget=0x7f05000e;
         public static final int item_date=0x7f050012;
-        public static final int item_sum=0x7f050014;
-        public static final int item_volume=0x7f050013;
+        public static final int item_economy=0x7f050013;
+        public static final int item_sum=0x7f050015;
+        public static final int item_volume=0x7f050014;
         public static final int linearLayout1=0x7f050000;
         public static final int odometerRow=0x7f050004;
         public static final int odometer_widget=0x7f050006;
@@ -50,6 +51,7 @@ public final class R {
         public static final int full=0x7f040007;
         public static final int import_text=0x7f040002;
         public static final int litres=0x7f04000b;
+        public static final int lper100km=0x7f04000c;
         public static final int lt=0x7f04000a;
         public static final int odometer_text=0x7f040004;
         public static final int sum=0x7f040006;

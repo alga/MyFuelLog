@@ -80,7 +80,8 @@ public class DbAdapter {
 	}
 
 	public Cursor fetchAll() {
-		return db.query(TABLE_NAME, null, null, null, null, null, null);
+		return db.query(TABLE_NAME, null, null, null, null, null,
+                        "odometer ASC");
 	}
 
 	public Cursor fetch(long id) throws SQLException {
