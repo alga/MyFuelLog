@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import android.util.Log;
+import android.util.Pair;
+import java.sql.Date;
 
 
 public class MyFuelLog extends ListActivity {
@@ -187,7 +189,7 @@ public class MyFuelLog extends ListActivity {
 class FillStats {
 
     /** Fuel economy for each fill, in l/100km */
-    private Map<Long, Double> economy = new HashMap<Long, Double>();
+    private Map<Long, Double> economy;
     private final DbAdapter db;
 
     FillStats(DbAdapter db) {
@@ -200,6 +202,7 @@ class FillStats {
         int lastOdometer = 0;
         double totalVolume = 0;
         List<Long> fillIds = new ArrayList<Long>(10);
+        economy = new HashMap<Long, Double>();
 
         for(; c.moveToNext(); ) {
             long id = c.getLong(c.getColumnIndex("_id"));
@@ -233,6 +236,31 @@ class FillStats {
         c.close();
     }
 
+    /**
+     * Return dates and economy values for all fills.
+     *
+     * @return an iterable of pairs of date and economy.
+     *
+     * @throws{IllegalStateException} if called before the stats are
+     * initialised by calling {@code calculate()}.
+     */
+    Iterable<Pair<Date, Double>> iterEconomy() {
+        if (economy == null) {
+            throw new IllegalStateException("calculate not called yet");
+        }
+        Cursor c = db.fetchAll();
+        List<Pair<Date, Double>> result = new ArrayList<Pair<Date, Double>>();
+
+        for (; c.moveToNext(); ) {
+            String datestr = c.getString(c.getColumnIndex("date"));
+            long id = c.getLong(c.getColumnIndex("_id"));
+
+            result.add(new Pair(Date.valueOf(datestr), getEconomy(id)));
+        }
+        return result;
+    }
+
+
     Double getEconomy(long id) {
         return economy.get(id);
     }
@@ -240,4 +268,26 @@ class FillStats {
     boolean haveEconomy(long id) {
         return economy.containsKey(id);
     }
+
+    int size() {
+        Cursor c = db.fetchAll();
+        return c.getCount();
+    }
+
+    double minEconomy() {
+        double min = Double.MAX_VALUE;
+        for (Pair<Date, Double> fill : iterEconomy())
+            if (fill.second != null && fill.second < min)
+                min = fill.second;
+        return min;
+    }
+
+    double maxEconomy() {
+        double max = 0.0;
+        for (Pair<Date, Double> fill : iterEconomy())
+            if (fill.second != null && fill.second > max)
+                max = fill.second;
+        return max;
+    }
+
 }
