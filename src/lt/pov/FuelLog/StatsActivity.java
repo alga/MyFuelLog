@@ -54,6 +54,9 @@ class StatsGraphDrawable extends Drawable {
     private DbAdapter db;
     private FillStats stats;
 
+    static final float LEFT_OFFSET = 0.0f;
+
+
     StatsGraphDrawable(DbAdapter db) {
         super();
         this.db = db;
@@ -78,40 +81,102 @@ class StatsGraphDrawable extends Drawable {
         // Let's set up some colours
         Paint background = new Paint();
         background.setColor(0xffffffff);
+        Paint winterbg = new Paint();
+        winterbg.setColor(0xffddeeff);
         Paint grid = new Paint();
-        grid.setColor(0xffd0d0d0);
+        grid.setColor(0xffc0c0c0);
         Paint data = new Paint();
-        data.setColor(0xff800000);
+        data.setColor(0xffe00000);
+        data.setAntiAlias(true);
+        Paint data_smooth = new Paint();
+        data_smooth.setColor(0x44e00000);
+        data_smooth.setAntiAlias(true);
+        data_smooth.setStrokeWidth(2.0f);
+
 
         // graph rectangle
         Rect bounds = canvas.getClipBounds();
         canvas.drawRect(bounds, background);
 
-        // y grid
+        // x and y resolution
+        float step = (bounds.right - bounds.left) / stats.size(); // x res
         double minvalue = stats.minEconomy();
         double maxvalue = stats.maxEconomy();
         float valuestep = (bounds.bottom - bounds.top) /
                           (float) (maxvalue - minvalue);  // in pixels per litre
+
+
+        // winter bars Oct - Mar
+        Float x = LEFT_OFFSET,  y = null, startx = null;
+        boolean winter = false;
+        
+        for (Pair<Date, Double> fill : stats.iterEconomy()) {
+            x += step;
+            int month = fill.first.getMonth() + 1;
+            winter = (month < 4 || month > 9);
+
+            if (winter && (startx == null)) {
+                startx = x;
+            }
+            if ((startx != null) && !winter) {
+                canvas.drawRect(startx, bounds.top, x,
+                                bounds.bottom, winterbg);
+                startx = null;
+            }
+        }
+        if (startx != null) {
+            canvas.drawRect(startx, bounds.top, x,
+                            bounds.bottom, winterbg);
+        }
+        
+        // y grid
         int start = new Double(Math.ceil(minvalue)).intValue();
-        for (int y = start; y <= maxvalue; y++) {
-            float yPixels = bounds.bottom - valuestep * (y - (float) minvalue);
+        for (int yy = start; yy <= maxvalue; yy++) {
+            float yPixels = bounds.bottom - valuestep * (yy - (float) minvalue);
             canvas.drawLine(bounds.left, yPixels, bounds.right, yPixels, grid);
-            canvas.drawText(new Integer(y).toString(), 0, yPixels - 2, grid);
+            canvas.drawText(new Integer(yy).toString(), 0, yPixels - 2, grid);
         }
 
         // values
-        Float lastx = null, lasty = null, x = 10.0f,  y = null;
-        float step = (bounds.right - bounds.left) / stats.size();
+        Float lastx = null, lasty = null;
+        x = LEFT_OFFSET;
+        y = null;
+        int count = 0;
+        float area[] = {0.0f, 0.0f, 0.0f};
+        Float mean = null, lastmean = null;
         for (Pair<Date, Double> fill : stats.iterEconomy()) {
             x += step;
             if (fill.second != null)
-                y = bounds.bottom - valuestep *
-                    (float)(fill.second - minvalue);
+                y = bounds.bottom - valuestep * (float)(fill.second - minvalue);
             if (lasty != null) {
                 canvas.drawLine(lastx, lasty, x, y, data);
             }
+
+            if (y != null) {
+                area[count % area.length] = y;
+                count++;
+            }
+
+            // Now let's overlay the smoothed version
+            Float sum = 0.0f;
+            for (int i = 0; i < area.length; i++) {
+                if (area[i] == 0.0f) {
+                    sum = null;
+                    break;
+                }
+                sum += area[i];
+            }
+            if (sum != null) {
+                mean = sum / area.length;
+            }
+
+            if ((lastmean != null) && (y != null)) {
+                canvas.drawLine(lastx, lastmean, x, mean, data_smooth);
+            }
+
             lastx = x;
             lasty = y;
+            lastmean = mean;
         }
 
     }
