@@ -26,10 +26,10 @@ public class MyFuelLogTabs extends TabActivity {
             .setContent(intent);
         tabHost.addTab(spec);
 
-        intent = new Intent().setClass(this, StatsActivity.class);
-        spec = tabHost.newTabSpec("stats")
-            .setIndicator("Stats",
-                          res.getDrawable(R.drawable.ic_tab_fill))
+        intent = new Intent().setClass(this, GraphActivity.class);
+        spec = tabHost.newTabSpec("graph")
+            .setIndicator("Graph",
+                          res.getDrawable(R.drawable.ic_tab_graph))
             .setContent(intent);
         tabHost.addTab(spec);
 

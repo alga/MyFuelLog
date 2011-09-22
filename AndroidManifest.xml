@@ -15,7 +15,7 @@
             </intent-filter>
         </activity>
         <activity android:name="MyFuelLog"></activity>
-        <activity android:name="StatsActivity"></activity>
+        <activity android:name="GraphActivity"></activity>
         <activity android:name="AddFillActivity"></activity>
     </application>
 </manifest>

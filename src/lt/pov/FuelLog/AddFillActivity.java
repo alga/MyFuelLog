@@ -101,7 +101,7 @@ public class AddFillActivity extends Activity {
 		boolean full = full_widget.isChecked();
 
 		if (id == null) {
-			db.insert(date, odometer, volume, sum, full);
+ 			db.insert(date, odometer, volume, sum, full);
 		} else {
 			db.update(id, date, odometer, volume, sum, full);
 		}

@@ -18,7 +18,7 @@ import android.util.Pair;
 import java.sql.Date;
 
 
-public class StatsActivity extends Activity {
+public class GraphActivity extends Activity {
     private DbAdapter db;
 
     @Override
@@ -28,16 +28,16 @@ public class StatsActivity extends Activity {
         db = new DbAdapter(this);
         db.open();
 
-        setContentView(new StatsView(this, db));
+        setContentView(new GraphView(this, db));
     }
 
 }
 
-class StatsView extends View {
+class GraphView extends View {
 
     private StatsGraphDrawable graph;
 
-    StatsView(Context ctx, DbAdapter db) {
+    GraphView(Context ctx, DbAdapter db) {
         super(ctx);
         graph = new StatsGraphDrawable(db);
     }
