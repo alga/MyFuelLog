@@ -136,7 +136,7 @@ class StatsGraphDrawable extends Drawable {
 
 
         // winter bars Oct - Mar
-        Float x = LEFT_OFFSET,  y = null, startx = null;
+        Float x = bounds.left + LEFT_OFFSET,  y = null, startx = null;
         boolean winter = false;
 
         for (Pair<Date, Double> fill : stats.iterEconomy()) {
@@ -168,7 +168,7 @@ class StatsGraphDrawable extends Drawable {
 
         // values
         Float lastx = null, lasty = null;
-        x = LEFT_OFFSET;
+        x = bounds.left + LEFT_OFFSET;
         y = null;
         int count = 0;
         float area[] = {0.0f, 0.0f, 0.0f};
