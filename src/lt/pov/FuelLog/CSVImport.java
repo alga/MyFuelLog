@@ -39,23 +39,34 @@ import java.util.List;
  *
  */
 public class CSVImport {
-	private final BufferedReader csv;
+    private final String filename;
 
 	public CSVImport(String filename) throws FileNotFoundException {
-		csv = new BufferedReader(new FileReader(filename));
+        this.filename = filename;
 	}
 
 	public List<Record> entries() throws IOException {
 		List<Record> result = new ArrayList<Record>();
 		String line;
-		while ((line = csv.readLine()) != null) {
-			String[] segments = line.trim().split(",");
-			result.add(new Record(segments[0],
-                                  Integer.valueOf(segments[1]),
-					              Double.valueOf(segments[2]),
-					              Double.valueOf(segments[3]),
-					              segments[4].equals("1")));
-		}
+
+        BufferedReader csv = null;
+        try {
+            csv = new BufferedReader(new FileReader(filename));
+            while ((line = csv.readLine()) != null) {
+                String[] segments = line.trim().split(",");
+                result.add(new Record(segments[0],
+                                      Integer.valueOf(segments[1]),
+                                      Double.valueOf(segments[2]),
+                                      Double.valueOf(segments[3]),
+                                      segments[4].equals("1")));
+            }
+        }
+        finally {
+            if (csv != null) {
+                csv.close();
+                csv = null;
+            }
+        }
 		return result;
 	}
 
