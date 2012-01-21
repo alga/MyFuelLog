@@ -37,6 +37,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Pair;
 import java.sql.Date;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
 
 
 public class GraphActivity extends Activity {
@@ -57,18 +59,20 @@ public class GraphActivity extends Activity {
 class GraphView extends View {
 
     private StatsGraphDrawable graph;
-    private ScaleGestureDetector scaleGestureDetector;
+    private ScaleGestureDetector scaleDetector;
+    private GestureDetector scrollDetector;
 
     GraphView(Context ctx, DbAdapter db) {
         super(ctx);
         graph = new StatsGraphDrawable(db);
-        scaleGestureDetector = new ScaleGestureDetector(
-            ctx, new ScaleListener());
+        scaleDetector = new ScaleGestureDetector(ctx, new ScaleListener());
+        scrollDetector = new GestureDetector(ctx, new ScrollListener());
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return scaleGestureDetector.onTouchEvent(event);
+        return (scrollDetector.onTouchEvent(event) ||
+                scaleDetector.onTouchEvent(event));
     }
 
     @Override
@@ -88,6 +92,17 @@ class GraphView extends View {
             }
 
             return result;
+        }
+    }
+
+    private class ScrollListener
+        extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2,
+                                float dx, float dy) {
+            awakenScrollBars();
+            scrollBy((int) dx, 0);
+            return true;
         }
     }
 }
