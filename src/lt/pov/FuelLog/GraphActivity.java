@@ -86,7 +86,8 @@ class GraphView extends View {
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
             boolean result = graph.scale(detector.getScaleFactor(),
-                                      detector.getFocusX());
+                                         detector.getFocusX(),
+                                         getWidth());
             if (result) {
                 invalidate();
             }
@@ -255,8 +256,11 @@ class StatsGraphDrawable extends Drawable {
     /**
      *  Scale the X dimension
      */
-    public boolean scale(float scaleFactor, float focus) {
+    public boolean scale(float scaleFactor, float focus, float width) {
         if (scaleFactor >= 0.001) {
+            // Limit zooming out to full width
+            float minScaleFactor = width / (bounds.right - bounds.left);
+            scaleFactor = Math.max(scaleFactor, minScaleFactor);
             // Transpose
             float left = bounds.left - focus;
             float right = bounds.right - focus;
