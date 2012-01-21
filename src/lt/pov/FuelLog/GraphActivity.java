@@ -101,7 +101,14 @@ class GraphView extends View {
         public boolean onScroll(MotionEvent e1, MotionEvent e2,
                                 float dx, float dy) {
             awakenScrollBars();
-            scrollBy((int) dx, 0);
+            int left = graph.getLeft();
+            int right = graph.getRight() - getWidth();
+            int candidate = getScrollX() + (int) dx;
+
+            // Clip the scroll to the area of the graph.
+            int xscroll = Math.min(Math.max(candidate, left), right);
+            scrollTo(xscroll, 0);
+            graph.setViewportLeft(xscroll);
             return true;
         }
     }
@@ -113,6 +120,7 @@ class StatsGraphDrawable extends Drawable {
     private DbAdapter db;
     private FillStats stats;
     private Rect bounds = null;
+    private int viewportLeft = 0;
 
     static final float LEFT_OFFSET = 0.0f;
 
@@ -165,7 +173,7 @@ class StatsGraphDrawable extends Drawable {
         double minvalue = stats.minEconomy();
         double maxvalue = stats.maxEconomy();
         float valuestep = (bounds.bottom - bounds.top) /
-                          (float) (maxvalue - minvalue);  // in pixels per litre
+            (float) (maxvalue - minvalue);  // in pixels per litre
 
 
         // winter bars Oct - Mar
@@ -196,7 +204,8 @@ class StatsGraphDrawable extends Drawable {
         for (int yy = start; yy <= maxvalue; yy++) {
             float yPixels = bounds.bottom - valuestep * (yy - (float) minvalue);
             canvas.drawLine(bounds.left, yPixels, bounds.right, yPixels, grid);
-            canvas.drawText(new Integer(yy).toString(), 0, yPixels - 2, grid);
+            canvas.drawText(new Integer(yy).toString(),
+                            viewportLeft, yPixels - 2, grid);
         }
 
         // values
@@ -274,4 +283,20 @@ class StatsGraphDrawable extends Drawable {
     @Override
     public final void setAlpha(final int n) {}
 
+    @Override
+    public int getIntrinsicWidth() {
+        return bounds.right - bounds.left;
+    }
+
+    public int getLeft() {
+        return bounds.left;
+    }
+
+    public int getRight() {
+        return bounds.right;
+    }
+
+    public void setViewportLeft(final int x) {
+        viewportLeft = x;
+    }
 }
