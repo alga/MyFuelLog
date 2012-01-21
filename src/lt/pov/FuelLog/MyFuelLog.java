@@ -255,7 +255,8 @@ class FillStats {
             String datestr = c.getString(c.getColumnIndex("date"));
             long id = c.getLong(c.getColumnIndex("_id"));
 
-            result.add(new Pair(Date.valueOf(datestr), getEconomy(id)));
+            result.add(new Pair<Date, Double>(Date.valueOf(datestr),
+            		                          getEconomy(id)));
         }
         return result;
     }
