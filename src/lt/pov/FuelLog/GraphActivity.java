@@ -71,8 +71,9 @@ class GraphView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return (scrollDetector.onTouchEvent(event) ||
-                scaleDetector.onTouchEvent(event));
+        boolean zoomp = scaleDetector.onTouchEvent(event);
+        boolean scrollp = scrollDetector.onTouchEvent(event);
+        return zoomp || scrollp;
     }
 
     @Override
