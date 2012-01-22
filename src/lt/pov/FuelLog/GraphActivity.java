@@ -162,6 +162,7 @@ class StatsGraphDrawable extends Drawable {
         Paint data = new Paint();
         data.setColor(0xffe00000);
         data.setAntiAlias(true);
+        data.setStyle(Paint.Style.STROKE);
         Paint data_smooth = new Paint();
         data_smooth.setColor(0x44e00000);
         data_smooth.setAntiAlias(true);
@@ -230,7 +231,7 @@ class StatsGraphDrawable extends Drawable {
             x = bounds.left + (fill.first.getTime() - firstTimestamp) * xres;
             if (fill.second != null) {
                 y = bounds.bottom - valuestep * (float)(fill.second - minvalue);
-                canvas.drawCircle(x, y, 3.0f, data);
+                canvas.drawCircle(x, y, 2.0f, data);
             }
             if (lasty != null) {
                 canvas.drawLine(lastx, lasty, x, y, data);
