@@ -1,6 +1,6 @@
 /* -*- c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil -*-
  *
- *   MyFuelLog -- Android fuel tracker
+ *  MyFuelLog -- Android fuel tracker
  *  Copyright (C) 2012  Albertas Agejevas <alga@pov.lt>
  *
  *  This program is free software: you can redistribute it and/or modify
