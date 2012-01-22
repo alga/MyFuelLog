@@ -171,7 +171,8 @@ class StatsGraphDrawable extends Drawable {
         canvas.drawRect(bounds, background);
 
         // x and y resolution
-        float step = (bounds.right - bounds.left) / stats.size(); // x res
+        // pixels per millisecond
+        float xres = ((float) bounds.right - bounds.left) / stats.timespan();
         double minvalue = stats.minEconomy();
         double maxvalue = stats.maxEconomy();
         float valuestep = (bounds.bottom - bounds.top) /
@@ -181,9 +182,13 @@ class StatsGraphDrawable extends Drawable {
         // winter bars Oct - Mar
         Float x = bounds.left + LEFT_OFFSET,  y = null, startx = null;
         boolean winter = false;
+        long firstTimestamp = 0;
 
         for (Pair<Date, Double> fill : stats.iterEconomy()) {
-            x += step;
+            if (firstTimestamp == 0) {
+                firstTimestamp = fill.first.getTime();
+            }
+            x = bounds.left + (fill.first.getTime() - firstTimestamp) * xres;
             int month = fill.first.getMonth() + 1;
             winter = (month < 4 || month > 9);
 
@@ -217,10 +222,16 @@ class StatsGraphDrawable extends Drawable {
         int count = 0;
         float area[] = {0.0f, 0.0f, 0.0f};
         Float mean = null, lastmean = null;
+        firstTimestamp = 0;
         for (Pair<Date, Double> fill : stats.iterEconomy()) {
-            x += step;
-            if (fill.second != null)
+            if (firstTimestamp == 0) {
+                firstTimestamp = fill.first.getTime();
+            }
+            x = bounds.left + (fill.first.getTime() - firstTimestamp) * xres;
+            if (fill.second != null) {
                 y = bounds.bottom - valuestep * (float)(fill.second - minvalue);
+                canvas.drawCircle(x, y, 3.0f, data);
+            }
             if (lasty != null) {
                 canvas.drawLine(lastx, lasty, x, y, data);
             }

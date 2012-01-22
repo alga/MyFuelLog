@@ -308,4 +308,25 @@ class FillStats {
         return max;
     }
 
+    /**
+     * The time between first and last fill in milliseconds
+     */
+    long timespan() {
+        Cursor c = db.fetchAll();
+        try {
+            if (c.getCount()< 2) {
+                return 1;
+            }
+            c.moveToFirst();
+            long start = Date.valueOf(
+                c.getString(c.getColumnIndex("date"))).getTime();
+            c.moveToLast();
+            long end = Date.valueOf(
+                c.getString(c.getColumnIndex("date"))).getTime();
+            return end - start + 1;
+        } finally {
+            c.close();
+        }
+    }
+
 }
