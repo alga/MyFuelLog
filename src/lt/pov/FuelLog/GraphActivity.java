@@ -131,7 +131,6 @@ class StatsGraphDrawable extends Drawable {
         super();
         this.db = db;
         stats = new FillStats(db);
-        stats.calculate();
     }
 
     @Override

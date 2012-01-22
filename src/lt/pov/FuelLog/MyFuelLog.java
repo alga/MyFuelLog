@@ -208,9 +208,12 @@ class FillStats {
     /** Fuel economy for each fill, in l/100km */
     private Map<Long, Double> economy;
     private final DbAdapter db;
+    private Iterable<Pair<Date, Double>> iterEconomy = null;
 
     FillStats(DbAdapter db) {
         this.db = db;
+        calculate();
+        iterEconomy();
     }
 
     /** Calculates the economy values for each fill. */
@@ -265,6 +268,9 @@ class FillStats {
         if (economy == null) {
             throw new IllegalStateException("calculate not called yet");
         }
+        if (iterEconomy != null) {
+            return iterEconomy;
+        }
         Cursor c = db.fetchAll();
         List<Pair<Date, Double>> result = new ArrayList<Pair<Date, Double>>();
 
@@ -275,6 +281,7 @@ class FillStats {
             result.add(new Pair<Date, Double>(Date.valueOf(datestr),
             		                          getEconomy(id)));
         }
+        iterEconomy = result;
         return result;
     }
 
