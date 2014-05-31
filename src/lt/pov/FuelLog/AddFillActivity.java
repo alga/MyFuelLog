@@ -42,6 +42,7 @@ public class AddFillActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_fill);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		db = new DbAdapter(this);
 		db.open();

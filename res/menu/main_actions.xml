@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <!-- Search, should appear as action button -->
+    <item android:id="@+id/action_graph"
+          android:icon="@drawable/ic_tab_graph"
+          android:title="@string/action_graph"
+          android:showAsAction="ifRoom" />
+
+    <item android:id="@+id/action_add"
+          android:icon="@android:drawable/ic_input_add"
+          android:title="@string/add_text"
+          android:showAsAction="ifRoom" />
+
+    <item android:id="@+id/action_import"
+          android:title="@string/import_text"
+          android:showAsAction="never" />
+</menu>

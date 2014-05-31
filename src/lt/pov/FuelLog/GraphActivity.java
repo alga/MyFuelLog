@@ -52,6 +52,7 @@ public class GraphActivity extends Activity {
         db.open();
 
         setContentView(new GraphView(this, db));
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 }

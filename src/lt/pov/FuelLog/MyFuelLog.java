@@ -27,6 +27,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -119,9 +120,9 @@ public class MyFuelLog extends ListActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(Menu.NONE, ADD_ID, Menu.NONE, R.string.add_text);
-		menu.add(Menu.NONE, IMPORT_ID, Menu.NONE, R.string.import_text);
-		return super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_actions, menu);
+        return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
@@ -134,13 +135,16 @@ public class MyFuelLog extends ListActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case ADD_ID:
+		case R.id.action_add:
 			addFill();
 			return true;
-		case IMPORT_ID:
+		case R.id.action_import:
 			Intent intent = new Intent("org.openintents.action.PICK_FILE");
 			startActivityForResult(intent, ACTIVITY_PICK);
 			return true;
+        case R.id.action_graph:
+            showGraph();
+            return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -167,6 +171,11 @@ public class MyFuelLog extends ListActivity {
 
 	public void addFill() {
         Intent i = new Intent(this, AddFillActivity.class);
+        startActivityForResult(i, ACTIVITY_CREATE);
+    }
+
+	public void showGraph() {
+        Intent i = new Intent(this, GraphActivity.class);
         startActivityForResult(i, ACTIVITY_CREATE);
     }
 

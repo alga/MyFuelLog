@@ -13,4 +13,5 @@
     <string name="lt">Lt</string>
     <string name="litres">l</string>
     <string name="lper100km">l/100km</string>
+    <string name="action_graph">Graph</string>
 </resources>
