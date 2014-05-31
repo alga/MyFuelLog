@@ -15,16 +15,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="GraphActivity">
+        <activity android:name="GraphActivity"
+                  android:parentActivityName="MyFuelLog">
+          <meta-data
+              android:name="android.support.PARENT_ACTIVITY"
+              android:value="MyFuelLog"/>
+        </activity>
+        <activity android:name="AddFillActivity"
+                  android:windowSoftInputMode="adjustResize"
+                  android:parentActivityName="MyFuelLog">
           <meta-data
               android:name="android.support.PARENT_ACTIVITY"
               android:value="MyFuelLog" />
-        </activity>
-        <activity android:name="AddFillActivity"
-                  android:windowSoftInputMode="adjustResize">
-          <meta-data
-              android:name="android.support.PARENT_ACTIVITY"
-              android:value="lt.pov.Fuel.Log.MyFuelLog" />
         </activity>
     </application>
 </manifest>
