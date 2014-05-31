@@ -13,6 +13,8 @@
                 android:layout_height="wrap_content" android:layout_width="wrap_content"
                 android:layout_weight="1"></TextView>
       <DatePicker android:layout_height="wrap_content"
+                  android:calendarViewShown="false"
+                  android:spinnersShown="true"
                   android:id="@+id/date_widget" android:layout_width="match_parent"></DatePicker>
     </LinearLayout>
     <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent"
@@ -46,14 +48,6 @@
       <CheckBox android:layout_weight="1" android:layout_height="wrap_content"
                 android:layout_width="wrap_content" android:text="@string/full"
                 android:id="@+id/full_widget"></CheckBox>
-    </LinearLayout>
-    <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/buttons">
-      <Button android:layout_weight="1" android:layout_height="wrap_content"
-              android:layout_width="wrap_content" android:text="@string/done"
-              android:id="@+id/save_button"></Button>
-      <Button android:layout_weight="1" android:layout_height="wrap_content"
-              android:layout_width="wrap_content" android:text="@string/cancel"
-              android:id="@+id/cancel_button"></Button>
     </LinearLayout>
   </LinearLayout>
 </ScrollView>

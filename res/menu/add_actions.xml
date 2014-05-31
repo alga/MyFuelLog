@@ -1,0 +1,7 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <!-- Search, should appear as action button -->
+    <item android:id="@+id/action_done"
+          android:icon="@android:drawable/ic_menu_save"
+          android:title="@string/done"
+          android:showAsAction="ifRoom" />
+</menu>

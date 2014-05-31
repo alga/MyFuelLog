@@ -21,6 +21,9 @@ package lt.pov.FuelLog;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -36,7 +39,6 @@ public class AddFillActivity extends Activity {
 	private EditText odometer_widget, sum_widget, volume_widget;
 	private CheckBox full_widget;
 	private DatePicker date_widget;
-	private Button save_button, cancel_button;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +54,6 @@ public class AddFillActivity extends Activity {
 		sum_widget = (EditText) findViewById(R.id.sum_widget);
 		volume_widget = (EditText) findViewById(R.id.volume_widget);
 		full_widget = (CheckBox) findViewById(R.id.full_widget);
-		save_button = (Button) findViewById(R.id.save_button);
-		cancel_button = (Button) findViewById(R.id.cancel_button);
 
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
@@ -61,25 +61,26 @@ public class AddFillActivity extends Activity {
 			populate();
 		}
 
-		save_button.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				save();
-				setResult(RESULT_OK);
-				finish();
-			}
-		});
-
-		cancel_button.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				setResult(RESULT_OK);
-				finish();
-			}
-		});
-
     }
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.add_actions, menu);
+        return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_done:
+            save();
+            setResult(RESULT_OK);
+            finish();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 
 
 	private void populate() {
